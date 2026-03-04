@@ -1,0 +1,41 @@
+services:
+  monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: xlist-monitor-standalone:local
+    container_name: xlist-monitor-standalone
+    user: ${XLM_CONTAINER_USER:-pwuser}
+    init: true
+    restart: unless-stopped
+    shm_size: "1gb"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:size=256m,mode=1777
+    environment:
+      TZ: ${TZ:-Asia/Shanghai}
+      XLM_CONFIG_PATH: ${XLM_CONFIG_PATH:-/app/config/config.json}
+      XLM_RUN_MODE: ${XLM_RUN_MODE:-loop}
+      XLM_RUN_INTERVAL_SECONDS: ${XLM_RUN_INTERVAL_SECONDS:-14400}
+      XLM_MAX_CONSECUTIVE_FAILURES: ${XLM_MAX_CONSECUTIVE_FAILURES:-3}
+      XLM_FAILURE_BACKOFF_SECONDS: ${XLM_FAILURE_BACKOFF_SECONDS:-60}
+      XLM_ALLOW_INSECURE_NO_SANDBOX: ${XLM_ALLOW_INSECURE_NO_SANDBOX:-false}
+      XLM_HEALTH_FILE: ${XLM_HEALTH_FILE:-/app/runtime/last_success_epoch}
+      XLM_HEALTH_MAX_AGE_SECONDS: ${XLM_HEALTH_MAX_AGE_SECONDS:-21600}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      XLM_CDP_URL: ${XLM_CDP_URL:-}
+    healthcheck:
+      test: ["CMD", "/app/scripts/healthcheck.sh"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 10m
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data
+      - ./output:/app/output
+      - ./runtime:/app/runtime

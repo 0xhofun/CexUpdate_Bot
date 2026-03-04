@@ -1,0 +1,19 @@
+{
+  "list_url": "https://x.com/i/lists/REPLACE_WITH_LIST_ID",
+  "headless": true,
+  "user_data_dir": "/app/runtime/chrome-data",
+  "max_scrolls": 20,
+  "sleep_seconds": 1.2,
+  "scrape_timeout_seconds": 240,
+  "exclude_reposts": true,
+  "allow_insecure_no_sandbox": false,
+  "db_path": "/app/data/x_list_monitor.db",
+  "raw_dump_dir": "/app/data/raw",
+  "output_dir": "/app/output",
+  "telegram": {
+    "enabled": false,
+    "bot_token": null,
+    "chat_id": null,
+    "max_posts_per_round": 10
+  }
+}

@@ -1,0 +1,35 @@
+services:
+  browser:
+    image: browserless/chrome:latest
+    container_name: xlist-browser-cdp
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:size=256m,mode=1777
+    shm_size: "1gb"
+    environment:
+      PREBOOT_CHROME: "true"
+      MAX_CONCURRENT_SESSIONS: "2"
+      TOKEN: ${BROWSERLESS_TOKEN:?BROWSERLESS_TOKEN is required for CDP sidecar mode}
+    expose:
+      - "3000"
+
+  monitor:
+    extends:
+      file: docker-compose.yml
+      service: monitor
+    container_name: xlist-monitor-standalone-cdp
+    environment:
+      TZ: ${TZ:-Asia/Shanghai}
+      XLM_CONFIG_PATH: ${XLM_CONFIG_PATH:-/app/config/config.cdp.json}
+      XLM_RUN_MODE: ${XLM_RUN_MODE:-loop}
+      XLM_RUN_INTERVAL_SECONDS: ${XLM_RUN_INTERVAL_SECONDS:-14400}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      BROWSERLESS_TOKEN: ${BROWSERLESS_TOKEN:?BROWSERLESS_TOKEN is required for CDP sidecar mode}
+      XLM_CDP_URL: ${XLM_CDP_URL:-ws://browser:3000}
+    depends_on:
+      - browser

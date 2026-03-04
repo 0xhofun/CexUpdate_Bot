@@ -1,0 +1,12 @@
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+output
+data
+runtime
+.env
+config/config.json
+config/config.cdp.json

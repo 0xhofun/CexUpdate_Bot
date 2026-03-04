@@ -1,0 +1,17 @@
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Local environments and tooling caches
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Runtime data and local secrets
+data/
+output/
+runtime/
+.env
+config/config.json
+config/config.cdp.json
