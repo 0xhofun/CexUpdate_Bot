@@ -17,7 +17,7 @@ This repository is independent from your existing `x-list-monitor` workflow.
 1. Prepare config and env:
 
 ```bash
-cd /Users/robynyu/CexUpdate_Bot
+cd CexUpdate_Bot
 cp config/config.example.json config/config.json
 cp .env.example .env
 ```
